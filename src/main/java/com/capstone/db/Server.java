@@ -6,6 +6,7 @@ import com.capstone.db.implementations.Db;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toCollection;
 public class Server {
 
     private CopyOnWriteArrayList<AtomicReference<Database>> dbs;
-    private AtomicReference<Database> currentDatabase;
+    //private AtomicReference<Database> currentDatabase;
     private String host;
     private String port;
 
@@ -23,13 +24,27 @@ public class Server {
         this.port = port;
 //        currentDatabase = new AtomicReference<>(new Database("test") {});
         this.dbs = new CopyOnWriteArrayList<>();
-        this.currentDatabase = new AtomicReference<>(new Database("test"));
-        dbs.add(currentDatabase);
+        dbs.add(new AtomicReference<>(new Database("test")));
+        //this.currentDatabase = new AtomicReference<>(new Database("test"));
+        ///dbs.add(currentDatabase);
     }
 
     public void useDb(String dbName) {
-        AtomicReference<Database> db = new AtomicReference<>(new Database(dbName));
-        dbs.add(db);
+
+        AtomicBoolean contains = new AtomicBoolean(false);
+
+        dbs.forEach(it -> {
+            if (it.get().getName().equals(dbName)) {
+                contains.set(true);
+            }
+        });
+
+        if (!contains.get()) {
+            AtomicReference<Database> db = new AtomicReference<>(new Database(dbName));
+            dbs.add(db);
+        }
+        //todo maybe the db already exists and we only need to change the reference to current db
+        //todo otherwise we create a new db, add it to the list of existing dbs and change the reference to the current db
     }
 
     public void dropDb(String dbName) {
@@ -39,4 +54,6 @@ public class Server {
                                                                 .collect(Collectors.toList());
         dbs.removeAll(dbsToRemove);
     }
+
+
 }
