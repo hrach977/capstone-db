@@ -3,6 +3,8 @@ package com.capstone.db;
 import com.capstone.db.general.Database;
 import com.capstone.db.implementations.Db;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,12 +18,14 @@ public class Server {
 
     private CopyOnWriteArrayList<AtomicReference<Database>> dbs;
     //private AtomicReference<Database> currentDatabase;
-    private String host;
-    private String port;
+//    private String host;
+//    private String port;
+    private final ServerSocket serverSocket;
 
-    public Server(String host, String port) {
-        this.host = host;
-        this.port = port;
+    public Server(int port) throws IOException {
+//        this.host = host;
+//        this.port = port;
+        this.serverSocket = new ServerSocket(port);
 //        currentDatabase = new AtomicReference<>(new Database("test") {});
         this.dbs = new CopyOnWriteArrayList<>();
         dbs.add(new AtomicReference<>(new Database("test")));
