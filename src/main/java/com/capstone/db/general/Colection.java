@@ -5,11 +5,13 @@ import com.capstone.db.indices.Index;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Colection {
 
     protected String name;
-    protected CopyOnWriteArrayList<Document> documents;
+    protected CopyOnWriteArrayList<AtomicReference<Document>> documents;
+    //protected CopyOnWriteArrayList<Document> documents;
     protected CopyOnWriteArrayList<Index> indices;
 
     public String getName() {

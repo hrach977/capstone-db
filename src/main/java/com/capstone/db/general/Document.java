@@ -14,6 +14,10 @@ public class Document {
         return values;
     }
 
+    public void update(String key, Object value) {
+        values.put(key, String.valueOf(value));
+    }
+
     public void setValues(ConcurrentHashMap<String, String> values) {
         this.values = values;
     }
