@@ -3,8 +3,13 @@ package com.capstone.db;
 import com.capstone.db.general.Database;
 import com.capstone.db.implementations.Db;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class Server {
 
@@ -25,5 +30,13 @@ public class Server {
     public void useDb(String dbName) {
         AtomicReference<Database> db = new AtomicReference<>(new Database(dbName));
         dbs.add(db);
+    }
+
+    public void dropDb(String dbName) {
+        //kinda hack as the interface doesn't support removal of items
+        Collection<AtomicReference<Database>> dbsToRemove = dbs.stream()
+                                                                .filter(it -> it.get().getName().equals(dbName))
+                                                                .collect(Collectors.toList());
+        dbs.removeAll(dbsToRemove);
     }
 }
