@@ -29,4 +29,16 @@ public class Colection {
         this.documents = new CopyOnWriteArrayList<>();
         this.indices = new CopyOnWriteArrayList<>();
     }
+
+    public AtomicReference<Document> findOne() {
+        return null;
+    }
+
+    public AtomicReference<Document> find(Map<String, String> filters) {
+        return null;
+    }
+
+    public AtomicReference<Database> find(Map<String, String> filters, Map<String, Integer> projectino) {
+        return null;
+    }
 }
